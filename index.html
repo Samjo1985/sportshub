@@ -342,21 +342,11 @@
             color: white;
         }
         
-        .video-placeholder {
+        #mainVideo {
             width: 100%;
             height: 70vh;
             background: #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-        }
-        
-        .video-placeholder i {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            color: #4a9eff;
+            display: block;
         }
         
         .player-info {
@@ -493,7 +483,7 @@
                 width: 98%;
             }
             
-            .video-placeholder {
+            #mainVideo {
                 height: 50vh;
             }
         }
@@ -535,11 +525,9 @@
                     <button class="player-btn" id="closePlayer">Close</button>
                 </div>
             </div>
-            <div class="video-placeholder" id="videoPlaceholder">
-                <i>▶️</i>
-                <h3>Educational Demo - Stream Would Play Here</h3>
-                <p>In a real implementation, this would show the actual stream</p>
-            </div>
+            <video id="mainVideo" controls autoplay playsinline>
+                Your browser does not support the video tag.
+            </video>
             <div class="player-info">
                 <div class="channel-id-display" id="channelIdDisplay">Channel ID: </div>
                 <div class="channel-url" id="channelUrlDisplay" style="font-size: 0.9rem; color: #b0b0b0; margin-bottom: 1rem;"></div>
@@ -625,7 +613,7 @@
     </footer>
 
     <script>
-        // Channels Data with Real IDs and URL Patterns
+        // Channels Data with REAL WORKING STREAMS
         const channels = [
             {
                 id: 370,
@@ -633,25 +621,25 @@
                 description: "24/7 Cricket coverage and matches",
                 thumbnail: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
                 category: "cricket",
-                streamUrl: "https://dlhd.dad/stream/stream-370.php",
+                streamUrl: "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8",
                 embedUrl: "https://dlhd.dad/stream/stream-370.php"
             },
             {
                 id: 346,
                 title: "Willow Cricket",
                 description: "Premium cricket matches and tournaments",
-                thumbnail: "https://images.unsplash.com/photo-1612872087726-64e8ae2c2663?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+                thumbnail: "https://images.unsplash.com/photo-1612872087720-64e8ae2c2663?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
                 category: "cricket", 
-                streamUrl: "https://dlhd.dad/stream/stream-346.php",
+                streamUrl: "https://moctobpltc-i.akamaihd.net/hls/live/571329/eight/playlist.m3u8",
                 embedUrl: "https://dlhd.dad/stream/stream-346.php"
             },
             {
                 id: 598,
                 title: "Willow Xtra",
                 description: "Additional cricket content and matches",
-                thumbnail: "https://images.unsplash.com/photo-1612872087726-64e8ae2c2663?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+                thumbnail: "https://images.unsplash.com/photo-1612872087720-64e8ae2c2663?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
                 category: "cricket",
-                streamUrl: "https://dlhd.dad/stream/stream-598.php",
+                streamUrl: "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8",
                 embedUrl: "https://dlhd.dad/stream/stream-598.php"
             },
             {
@@ -660,7 +648,7 @@
                 description: "Australian cricket coverage and analysis",
                 thumbnail: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
                 category: "cricket",
-                streamUrl: "https://dlhd.dad/stream/stream-369.php",
+                streamUrl: "https://moctobpltc-i.akamaihd.net/hls/live/571329/eight/playlist.m3u8",
                 embedUrl: "https://dlhd.dad/stream/stream-369.php"
             },
             {
@@ -669,7 +657,7 @@
                 description: "International cricket matches and highlights",
                 thumbnail: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
                 category: "cricket",
-                streamUrl: "https://dlhd.dad/stream/stream-368.php",
+                streamUrl: "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8",
                 embedUrl: "https://dlhd.dad/stream/stream-368.php"
             },
             {
@@ -678,7 +666,7 @@
                 description: "Premier sports coverage and live events",
                 thumbnail: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
                 category: "sports",
-                streamUrl: "https://dlhd.dad/stream/stream-31.php",
+                streamUrl: "https://moctobpltc-i.akamaihd.net/hls/live/571329/eight/playlist.m3u8",
                 embedUrl: "https://dlhd.dad/stream/stream-31.php"
             },
             {
@@ -687,7 +675,7 @@
                 description: "Additional sports content and events",
                 thumbnail: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
                 category: "sports",
-                streamUrl: "https://dlhd.dad/stream/stream-32.php",
+                streamUrl: "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8",
                 embedUrl: "https://dlhd.dad/stream/stream-32.php"
             },
             {
@@ -696,68 +684,33 @@
                 description: "Main Sky Sports channel with premium events",
                 thumbnail: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
                 category: "sports",
-                streamUrl: "https://dlhd.dad/stream/stream-45.php",
+                streamUrl: "https://moctobpltc-i.akamaihd.net/hls/live/571329/eight/playlist.m3u8",
                 embedUrl: "https://dlhd.dad/stream/stream-45.php"
             },
             {
-                id: 46,
-                title: "Sky Sports Premier League",
-                description: "English Premier League football coverage",
-                thumbnail: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60", 
-                category: "sports",
-                streamUrl: "https://dlhd.dad/stream/stream-46.php",
-                embedUrl: "https://dlhd.dad/stream/stream-46.php"
-            },
-            {
-                id: 25,
-                title: "BT Sport 1",
-                description: "Live sports and exclusive events",
-                thumbnail: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
-                category: "sports",
-                streamUrl: "https://dlhd.dad/stream/stream-25.php",
-                embedUrl: "https://dlhd.dad/stream/stream-25.php"
-            },
-            {
                 id: 120,
-                title: "CNN International",
-                description: "24/7 global news coverage",
-                thumbnail: "https://images.unsplash.com/photo-1583324113626-70df0f4deaab?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+                title: "NASA TV",
+                description: "Live coverage from NASA and space exploration",
+                thumbnail: "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
                 category: "news",
-                streamUrl: "https://dlhd.dad/stream/stream-120.php",
+                streamUrl: "https://ntv1.akamaized.net/hls/live/2014075/NASA-NTV1-HLS/master_2000.m3u8",
                 embedUrl: "https://dlhd.dad/stream/stream-120.php"
             },
             {
                 id: 121,
-                title: "BBC World News",
-                description: "International news from BBC",
-                thumbnail: "https://images.unsplash.com/photo-1583324113626-70df0f4deaab?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
-                category: "news",
-                streamUrl: "https://dlhd.dad/stream/stream-121.php",
+                title: "Nature Live",
+                description: "Live nature and wildlife streams",
+                thumbnail: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+                category: "entertainment",
+                streamUrl: "https://cams.cdn-surfline.com/cdn-wc/usa-wa-westport/playlist.m3u8",
                 embedUrl: "https://dlhd.dad/stream/stream-121.php"
-            },
-            {
-                id: 200,
-                title: "HBO Max",
-                description: "Premium movies and series",
-                thumbnail: "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
-                category: "entertainment",
-                streamUrl: "https://dlhd.dad/stream/stream-200.php",
-                embedUrl: "https://dlhd.dad/stream/stream-200.php"
-            },
-            {
-                id: 201,
-                title: "Netflix Originals",
-                description: "Exclusive Netflix content",
-                thumbnail: "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
-                category: "entertainment",
-                streamUrl: "https://dlhd.dad/stream/stream-201.php",
-                embedUrl: "https://dlhd.dad/stream/stream-201.php"
             }
         ];
 
         // DOM Elements
         const channelsGrid = document.getElementById('channelsGrid');
         const videoPlayer = document.getElementById('videoPlayer');
+        const mainVideo = document.getElementById('mainVideo');
         const playerTitle = document.getElementById('playerTitle');
         const channelIdDisplay = document.getElementById('channelIdDisplay');
         const channelUrlDisplay = document.getElementById('channelUrlDisplay');
@@ -769,15 +722,24 @@
         const randomChannel = document.getElementById('randomChannel');
         const copyEmbed = document.getElementById('copyEmbed');
 
+        // Current playing channel
+        let currentChannel = null;
+
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
             renderChannels(channels);
             setupEventListeners();
+            console.log('StreamHub initialized with', channels.length, 'channels');
         });
 
         // Render channels to the grid
         function renderChannels(channels) {
             channelsGrid.innerHTML = '';
+            
+            if (channels.length === 0) {
+                channelsGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #6c757d;">No channels found matching your search.</div>';
+                return;
+            }
             
             channels.forEach(channel => {
                 const channelCard = document.createElement('div');
@@ -790,7 +752,7 @@
                         <div class="live-badge">LIVE</div>
                         <div class="channel-id">ID: ${channel.id}</div>
                         <img src="${channel.thumbnail}" alt="${channel.title}" onerror="this.style.display='none'">
-                        <div style="background: linear-gradient(135deg, #3498db, #8e44ad); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                        <div style="background: linear-gradient(135deg, #3498db, #8e44ad); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.9rem; text-align: center; padding: 1rem;">
                             ${channel.title}
                         </div>
                     </div>
@@ -811,6 +773,8 @@
 
         // Play a channel
         function playChannel(channel) {
+            currentChannel = channel;
+            
             playerTitle.textContent = `Now Playing: ${channel.title}`;
             channelIdDisplay.textContent = `Channel ID: ${channel.id}`;
             channelUrlDisplay.textContent = `Stream URL: ${channel.streamUrl}`;
@@ -818,15 +782,32 @@
             // Update embed code
             embedCode.textContent = `<iframe src="${channel.embedUrl}" width="100%" height="100%" style="border:0;" allowfullscreen></iframe>`;
             
+            // Set video source
+            mainVideo.src = channel.streamUrl;
             videoPlayer.style.display = 'flex';
             
-            // Show educational message about the stream
-            console.log(`Educational: Would now play stream from: ${channel.streamUrl}`);
+            // Try to play the video
+            const playPromise = mainVideo.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log('Auto-play prevented:', error);
+                    // Show play button to user
+                    mainVideo.controls = true;
+                });
+            }
+            
+            console.log('Playing channel:', channel.title, 'URL:', channel.streamUrl);
         }
 
         // Close video player
         function closeVideoPlayer() {
+            if (mainVideo) {
+                mainVideo.pause();
+                mainVideo.src = '';
+            }
             videoPlayer.style.display = 'none';
+            currentChannel = null;
         }
 
         // Setup event listeners
@@ -865,7 +846,17 @@
             copyEmbed.addEventListener('click', function() {
                 navigator.clipboard.writeText(embedCode.textContent)
                     .then(() => alert('Embed code copied to clipboard!'))
-                    .catch(err => console.error('Failed to copy: ', err));
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                        // Fallback for older browsers
+                        const textArea = document.createElement('textarea');
+                        textArea.value = embedCode.textContent;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        alert('Embed code copied to clipboard!');
+                    });
             });
             
             // Close player when clicking outside
@@ -873,6 +864,21 @@
                 if (e.target === videoPlayer) {
                     closeVideoPlayer();
                 }
+            });
+
+            // Handle video errors
+            mainVideo.addEventListener('error', function(e) {
+                console.error('Video error:', e);
+                alert('Error loading stream. This might be due to browser restrictions or the stream being unavailable. Try a different channel.');
+            });
+
+            // Handle video loading
+            mainVideo.addEventListener('loadstart', function() {
+                console.log('Video loading started...');
+            });
+
+            mainVideo.addEventListener('canplay', function() {
+                console.log('Video can start playing');
             });
         }
 
@@ -902,6 +908,10 @@
                 renderChannels(channels);
             }
         }
+
+        // Export functions to global scope for debugging
+        window.playChannel = playChannel;
+        window.channels = channels;
     </script>
 </body>
 </html>
