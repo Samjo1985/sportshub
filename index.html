@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamHub - 24/7 Channels</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0f1419;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #1a1f2e 0%, #0f1419 100%);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #2a3347;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #4a9eff, #6c5ce7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #4a9eff;
+        }
+        
+        nav a.active {
+            color: #4a9eff;
+        }
+        
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #4a9eff;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #1a1f2e;
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            border: 1px solid #2a3347;
+        }
+        
+        .search-bar input {
+            background: transparent;
+            border: none;
+            color: #e0e0e0;
+            width: 200px;
+            padding: 0.3rem;
+            outline: none;
+        }
+        
+        .search-bar button {
+            background: transparent;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(15, 20, 25, 0.8), rgba(15, 20, 25, 0.9)), 
+                        url('https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #4a9eff, #6c5ce7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #b0b0b0;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(90deg, #4a9eff, #6c5ce7);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(74, 158, 255, 0.3);
+        }
+        
+        /* Channels Section */
+        .channels-section {
+            padding: 3rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .section-header h2 {
+            font-size: 1.8rem;
+            color: #e0e0e0;
+        }
+        
+        .filter-options {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .filter-btn {
+            background: #1a1f2e;
+            border: 1px solid #2a3347;
+            color: #b0b0b0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn.active {
+            background: #4a9eff;
+            color: white;
+            border-color: #4a9eff;
+        }
+        
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .channel-card {
+            background: #1a1f2e;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #2a3347;
+            cursor: pointer;
+        }
+        
+        .channel-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .channel-thumbnail {
+            height: 160px;
+            width: 100%;
+            background: #2a3347;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .channel-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .live-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #e74c3c;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .channel-id {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .channel-info {
+            padding: 1.2rem;
+        }
+        
+        .channel-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #e0e0e0;
+        }
+        
+        .channel-description {
+            font-size: 0.9rem;
+            color: #b0b0b0;
+            margin-bottom: 1rem;
+        }
+        
+        .channel-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        /* Video Player Styles */
+        .video-player-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .video-player {
+            width: 95%;
+            max-width: 1200px;
+            background: #1a1f2e;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .player-header {
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2a3347;
+            background: #1a1f2e;
+        }
+        
+        .player-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #e0e0e0;
+        }
+        
+        .player-controls {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .player-btn {
+            background: #2a3347;
+            color: #e0e0e0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .player-btn:hover {
+            background: #4a9eff;
+            color: white;
+        }
+        
+        .video-placeholder {
+            width: 100%;
+            height: 70vh;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        
+        .video-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #4a9eff;
+        }
+        
+        .player-info {
+            padding: 1rem 1.5rem;
+            background: #1a1f2e;
+            border-top: 1px solid #2a3347;
+        }
+        
+        .channel-id-display {
+            font-size: 0.9rem;
+            color: #4a9eff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .embed-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #0f1419;
+            border-radius: 5px;
+        }
+        
+        .embed-section h4 {
+            margin-bottom: 0.5rem;
+            color: #e0e0e0;
+        }
+        
+        .embed-code {
+            background: #2a3347;
+            padding: 0.8rem;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #b0b0b0;
+            margin-bottom: 0.5rem;
+            word-break: break-all;
+        }
+        
+        .copy-btn {
+            background: #4a9eff;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background: #3a8eef;
+        }
+        
+        /* Footer */
+        footer {
+            background: #0a0e14;
+            padding: 3rem 2rem 1.5rem;
+            border-top: 1px solid #2a3347;
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.2rem;
+            color: #e0e0e0;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-column a {
+            color: #b0b0b0;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: #4a9eff;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #2a3347;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+            
+            .search-bar {
+                width: 100%;
+                margin-top: 1rem;
+            }
+            
+            .search-bar input {
+                width: 100%;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .filter-options {
+                flex-wrap: wrap;
+            }
+            
+            .video-player {
+                width: 98%;
+            }
+            
+            .video-placeholder {
+                height: 50vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <h1>StreamHub</h1>
+            </div>
+            
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">24/7 Channels</a></li>
+                    <li><a href="#">Sports</a></li>
+                    <li><a href="#">Entertainment</a></li>
+                    <li><a href="#">News</a></li>
+                </ul>
+            </nav>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Search channels..." id="searchInput">
+                <button id="searchButton">🔍</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Video Player -->
+    <div class="video-player-container" id="videoPlayer">
+        <div class="video-player">
+            <div class="player-header">
+                <div class="player-title" id="playerTitle">Now Playing</div>
+                <div class="player-controls">
+                    <button class="player-btn" id="theaterMode">Theater Mode</button>
+                    <button class="player-btn" id="randomChannel">Random Channel</button>
+                    <button class="player-btn" id="closePlayer">Close</button>
+                </div>
+            </div>
+            <div class="video-placeholder" id="videoPlaceholder">
+                <i>▶️</i>
+                <h3>Educational Demo - Stream Would Play Here</h3>
+                <p>In a real implementation, this would show the actual stream</p>
+            </div>
+            <div class="player-info">
+                <div class="channel-id-display" id="channelIdDisplay">Channel ID: </div>
+                <div class="channel-url" id="channelUrlDisplay" style="font-size: 0.9rem; color: #b0b0b0; margin-bottom: 1rem;"></div>
+                <div class="embed-section">
+                    <h4>Embed Code</h4>
+                    <div class="embed-code" id="embedCode">
+                        &lt;iframe src="https://dlhd.dad/stream/stream-000.php" width="100%" height="100%" style="border:0;" allowfullscreen&gt;&lt;/iframe&gt;
+                    </div>
+                    <button class="copy-btn" id="copyEmbed">Copy Embed Code</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>24/7 Live Channels</h2>
+            <p>Watch your favorite sports, entertainment and news channels 24/7. Never miss a moment with our continuous streaming service.</p>
+            <a href="#" class="cta-button">Start Watching Now</a>
+        </div>
+    </section>
+
+    <!-- Channels Section -->
+    <section class="channels-section">
+        <div class="section-header">
+            <h2>Live Channels</h2>
+            <div class="filter-options">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="sports">Sports</button>
+                <button class="filter-btn" data-filter="cricket">Cricket</button>
+                <button class="filter-btn" data-filter="entertainment">Entertainment</button>
+                <button class="filter-btn" data-filter="news">News</button>
+            </div>
+        </div>
+        
+        <div class="channels-grid" id="channelsGrid">
+            <!-- Channels will be loaded dynamically -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>StreamHub</h3>
+                <p>Your premier destination for 24/7 streaming content. Watch sports, entertainment and news channels anytime.</p>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">24/7 Channels</a></li>
+                    <li><a href="#">Sports</a></li>
+                    <li><a href="#">Entertainment</a></li>
+                    <li><a href="#">News</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Copyright</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 StreamHub. Educational demonstration only. This is a learning project.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Channels Data with Real IDs and URL Patterns
+        const channels = [
+            {
+                id: 370,
+                title: "Astro Cricket",
+                description: "24/7 Cricket coverage and matches",
+                thumbnail: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+                category: "cricket",
+                streamUrl: "https://dlhd.dad/stream/stream-370.php",
+                embedUrl: "https://dlhd.dad/stream/stream-370.php"
+            },
+            {
+                id: 346,
+                title: "Willow Cricket",
+                description: "Premium cricket matches and tournaments",
+                thumbnail: "https://images.unsplash.com/photo-1612872087726-64e8ae2c2663?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+                category: "cricket", 
+                streamUrl: "https://dlhd.dad/stream/stream-346.php",
+                embedUrl: "https://dlhd.dad/stream/stream-346.php"
+            },
+            {
+                id: 598,
+                title: "Willow Xtra",
+                description: "Additional cricket content and matches",
+                thumbnail: "https://images.unsplash.com/photo-1612872087726-64e8ae2c2663?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+                category: "cricket",
+                streamUrl: "https://dlhd.dad/stream/stream-598.php",
+                embedUrl: "https://dlhd.dad/stream/stream-598.php"
+            },
+            {
+                id: 369,
+                title: "Fox Cricket",
+                description: "Australian cricket coverage and analysis",
+                thumbnail: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+                category: "cricket",
+                streamUrl: "https://dlhd.dad/stream/stream-369.php",
+                embedUrl: "https://dlhd.dad/stream/stream-369.php"
+            },
+            {
+                id: 368,
+                title: "Super Cricket",
+                description: "International cricket matches and highlights",
+                thumbnail: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+                category: "cricket",
+                streamUrl: "https://dlhd.dad/stream/stream-368.php",
+                embedUrl: "https://dlhd.dad/stream/stream-368.php"
+            },
+            {
+                id: 31,
+                title: "TNT Sports 1",
+                description: "Premier sports coverage and live events",
+                thumbnail: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+                category: "sports",
+                streamUrl: "https://dlhd.dad/stream/stream-31.php",
+                embedUrl: "https://dlhd.dad/stream/stream-31.php"
+            },
+            {
+                id: 32,
+                title: "TNT Sports 2", 
+                description: "Additional sports content and events",
+                thumbnail: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+                category: "sports",
+                streamUrl: "https://dlhd.dad/stream/stream-32.php",
+                embedUrl: "https://dlhd.dad/stream/stream-32.php"
+            },
+            {
+                id: 45,
+                title: "Sky Sports Main Event",
+                description: "Main Sky Sports channel with premium events",
+                thumbnail: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+                category: "sports",
+                streamUrl: "https://dlhd.dad/stream/stream-45.php",
+                embedUrl: "https://dlhd.dad/stream/stream-45.php"
+            },
+            {
+                id: 46,
+                title: "Sky Sports Premier League",
+                description: "English Premier League football coverage",
+                thumbnail: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60", 
+                category: "sports",
+                streamUrl: "https://dlhd.dad/stream/stream-46.php",
+                embedUrl: "https://dlhd.dad/stream/stream-46.php"
+            },
+            {
+                id: 25,
+                title: "BT Sport 1",
+                description: "Live sports and exclusive events",
+                thumbnail: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+                category: "sports",
+                streamUrl: "https://dlhd.dad/stream/stream-25.php",
+                embedUrl: "https://dlhd.dad/stream/stream-25.php"
+            },
+            {
+                id: 120,
+                title: "CNN International",
+                description: "24/7 global news coverage",
+                thumbnail: "https://images.unsplash.com/photo-1583324113626-70df0f4deaab?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+                category: "news",
+                streamUrl: "https://dlhd.dad/stream/stream-120.php",
+                embedUrl: "https://dlhd.dad/stream/stream-120.php"
+            },
+            {
+                id: 121,
+                title: "BBC World News",
+                description: "International news from BBC",
+                thumbnail: "https://images.unsplash.com/photo-1583324113626-70df0f4deaab?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+                category: "news",
+                streamUrl: "https://dlhd.dad/stream/stream-121.php",
+                embedUrl: "https://dlhd.dad/stream/stream-121.php"
+            },
+            {
+                id: 200,
+                title: "HBO Max",
+                description: "Premium movies and series",
+                thumbnail: "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+                category: "entertainment",
+                streamUrl: "https://dlhd.dad/stream/stream-200.php",
+                embedUrl: "https://dlhd.dad/stream/stream-200.php"
+            },
+            {
+                id: 201,
+                title: "Netflix Originals",
+                description: "Exclusive Netflix content",
+                thumbnail: "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+                category: "entertainment",
+                streamUrl: "https://dlhd.dad/stream/stream-201.php",
+                embedUrl: "https://dlhd.dad/stream/stream-201.php"
+            }
+        ];
+
+        // DOM Elements
+        const channelsGrid = document.getElementById('channelsGrid');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const playerTitle = document.getElementById('playerTitle');
+        const channelIdDisplay = document.getElementById('channelIdDisplay');
+        const channelUrlDisplay = document.getElementById('channelUrlDisplay');
+        const embedCode = document.getElementById('embedCode');
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const closePlayer = document.getElementById('closePlayer');
+        const theaterMode = document.getElementById('theaterMode');
+        const randomChannel = document.getElementById('randomChannel');
+        const copyEmbed = document.getElementById('copyEmbed');
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderChannels(channels);
+            setupEventListeners();
+        });
+
+        // Render channels to the grid
+        function renderChannels(channels) {
+            channelsGrid.innerHTML = '';
+            
+            channels.forEach(channel => {
+                const channelCard = document.createElement('div');
+                channelCard.className = 'channel-card';
+                channelCard.setAttribute('data-category', channel.category);
+                channelCard.setAttribute('data-id', channel.id);
+                
+                channelCard.innerHTML = `
+                    <div class="channel-thumbnail">
+                        <div class="live-badge">LIVE</div>
+                        <div class="channel-id">ID: ${channel.id}</div>
+                        <img src="${channel.thumbnail}" alt="${channel.title}" onerror="this.style.display='none'">
+                        <div style="background: linear-gradient(135deg, #3498db, #8e44ad); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                            ${channel.title}
+                        </div>
+                    </div>
+                    <div class="channel-info">
+                        <h3 class="channel-title">${channel.title}</h3>
+                        <p class="channel-description">${channel.description}</p>
+                        <div class="channel-meta">
+                            <span>${channel.category}</span>
+                            <span>ID: ${channel.id}</span>
+                        </div>
+                    </div>
+                `;
+                
+                channelCard.addEventListener('click', () => playChannel(channel));
+                channelsGrid.appendChild(channelCard);
+            });
+        }
+
+        // Play a channel
+        function playChannel(channel) {
+            playerTitle.textContent = `Now Playing: ${channel.title}`;
+            channelIdDisplay.textContent = `Channel ID: ${channel.id}`;
+            channelUrlDisplay.textContent = `Stream URL: ${channel.streamUrl}`;
+            
+            // Update embed code
+            embedCode.textContent = `<iframe src="${channel.embedUrl}" width="100%" height="100%" style="border:0;" allowfullscreen></iframe>`;
+            
+            videoPlayer.style.display = 'flex';
+            
+            // Show educational message about the stream
+            console.log(`Educational: Would now play stream from: ${channel.streamUrl}`);
+        }
+
+        // Close video player
+        function closeVideoPlayer() {
+            videoPlayer.style.display = 'none';
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Filter functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const filter = this.getAttribute('data-filter');
+                    filterChannels(filter);
+                });
+            });
+            
+            // Search functionality
+            searchButton.addEventListener('click', performSearch);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') performSearch();
+            });
+            
+            // Player controls
+            closePlayer.addEventListener('click', closeVideoPlayer);
+            
+            theaterMode.addEventListener('click', function() {
+                videoPlayer.classList.toggle('theater-mode');
+                alert('Theater mode toggled!');
+            });
+            
+            randomChannel.addEventListener('click', function() {
+                const randomIndex = Math.floor(Math.random() * channels.length);
+                playChannel(channels[randomIndex]);
+            });
+            
+            copyEmbed.addEventListener('click', function() {
+                navigator.clipboard.writeText(embedCode.textContent)
+                    .then(() => alert('Embed code copied to clipboard!'))
+                    .catch(err => console.error('Failed to copy: ', err));
+            });
+            
+            // Close player when clicking outside
+            videoPlayer.addEventListener('click', function(e) {
+                if (e.target === videoPlayer) {
+                    closeVideoPlayer();
+                }
+            });
+        }
+
+        // Filter channels by category
+        function filterChannels(category) {
+            if (category === 'all') {
+                renderChannels(channels);
+            } else {
+                const filteredChannels = channels.filter(channel => channel.category === category);
+                renderChannels(filteredChannels);
+            }
+        }
+
+        // Search channels
+        function performSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            if (searchTerm) {
+                const filteredChannels = channels.filter(channel => 
+                    channel.title.toLowerCase().includes(searchTerm) || 
+                    channel.description.toLowerCase().includes(searchTerm) ||
+                    channel.id.toString().includes(searchTerm)
+                );
+                
+                renderChannels(filteredChannels);
+            } else {
+                renderChannels(channels);
+            }
+        }
+    </script>
+</body>
+</html>
